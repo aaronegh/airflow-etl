@@ -1,9 +1,8 @@
 # ETL Framework
-
 This exercise involves the ingestion of JSON lines format dataset to a target data warehouse.
 
 
-### Requirements for data transformation and data warehousing
+#### Requirements for data transformation and data warehousing
 1. PII information must be removed - ['C_FIRST_NAME', 'C_LAST_NAME'].
 2. 'C_EMAIL_ADDRESS' field is recoded to 'C_EMAIL_DOMAIN' and delete the original field.
 3. Write resulting output to another file.
@@ -11,8 +10,6 @@ This exercise involves the ingestion of JSON lines format dataset to a target da
 
 
 ## Installation
----
-
 Prerequisite to run this application
 
 - Docker
@@ -29,8 +26,6 @@ The services required for this app includes :
 - Adminer
 
 ## Documentation
-___
-
 Following diagram illustrate the data pipeline framework that caters to the requirements above.
 
 ![Dataflow](dataflow.png)
@@ -65,7 +60,6 @@ In detail, the pipeline performs the following tasks :
 
 
 ## Suggested Improvements
----
 1. Field encryption function can be added into pre-staging transformation step to further de-risk data pipeline.
 2. DQ functions can be handled by tools such as [Great Expectations](https://greatexpectations.io).
 3. If the existing data architecture allows cheap storage cost, [dimension snapshotting](https://www.jie-tao.com/scd-ii-or-snapshot-for-dimension/) approach can be considered beside SCD type 2, which aims to create immutable and reproducible data pipelines that are easier to maintain and manage.
