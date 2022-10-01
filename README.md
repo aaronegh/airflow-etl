@@ -48,7 +48,7 @@ Once all services are running, access the Airflow web UI at `localhost:8080` wit
 The table name is `staging.customer`.
 
 #### Adminer
-I have included (Adminer)[https://www.adminer.org] into this docker deployment just in case. Go to `localhost:3000` and log in with the above credentials. 
+I have included [Adminer](https://www.adminer.org) into this docker deployment just in case. Go to `localhost:3000` and log in with the above credentials. 
 ![adminer1](images/adminer1.png)
 You should be able to see the tables once you switch the schema to `staging`.
 ![adminer2](images/adminer2.png)
