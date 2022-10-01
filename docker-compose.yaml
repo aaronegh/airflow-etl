@@ -29,6 +29,7 @@ services:
         image: puckel/docker-airflow
         restart: always
         depends_on:
+            - init
             - postgres
         environment:
             - LOAD_EX=n
@@ -61,5 +62,6 @@ services:
         ports:
             - 3000:8080
         depends_on:
+            - init
             - postgres
             - webserver
