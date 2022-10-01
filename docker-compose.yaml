@@ -11,6 +11,7 @@ services:
 
     postgres:
         image: postgres:15rc1
+        container_name: airflow_postgres_1
         restart: always
         environment:
             - POSTGRES_USER=airflow
@@ -27,6 +28,7 @@ services:
 
     webserver:
         image: puckel/docker-airflow
+        user: root
         restart: always
         depends_on:
             - init

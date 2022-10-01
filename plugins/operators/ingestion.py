@@ -54,7 +54,7 @@ class StagingIngestOperator(BaseOperator):
         return df.duplicated().any()
 
     # loads df to csv
-    def __load_to_csv__(self, df: DataFrame, path: str, target: str) -> csv:
+    def __load_to_csv__(self, df: DataFrame, path: str, target: str,source_name: str) -> csv:
         logging.info("creating csv")
         for column in df.columns:
             if df[column].dtype == "float64":
@@ -62,14 +62,13 @@ class StagingIngestOperator(BaseOperator):
                     df[column].apply(lambda f: format(f, ".0f")).replace("nan", "")
                 )
             df[column] = df[column].fillna("").astype("str")
-        # file_timestamp = datetime.utcnow().strftime("%Y%m%d%H%M%S%f")
         timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
         (
             df["IS_CURRENT"],
             df["ETL_DATETIME"],
             df["CREATED_BY"],
             df["DEACTIVATED_DATE"],
-        ) = ("Y", timestamp, f"{target}_extraction_job", "")
+        ) = ("Y", timestamp, source_name, "")
         logging.info("done")
         return df.to_csv(f"{path}/{target}.csv", index=False, encoding="utf-8")
 
@@ -119,8 +118,9 @@ class StagingIngestOperator(BaseOperator):
             # output to path
             p = Path(data)
             domain = config["target"]
+            source_name = p.stem
             target = f"{domain}_{p.stem}"
-            self.__load_to_csv__(df=df, path="./staging", target=target)
+            self.__load_to_csv__(df=df, path="./staging", target=target,source_name=source_name)
 
             # mark file as processed
             p.rename(Path(p.parent, f"{p.stem}_processed_by_staging{p.suffix}"))

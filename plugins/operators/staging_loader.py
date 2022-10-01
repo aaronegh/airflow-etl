@@ -110,7 +110,7 @@ class StagingDBLoadOperator(BaseOperator):
             cursor.execute(new_insert_table_statement)
             cursor.execute("COMMIT")
             insert_table_statement = """
-            INSERT INTO staging.{} ({}) SELECT {} FROM staging.tmp_{} SOURCE left join staging.{} TARGET on {} WHERE ({}) and TARGET.deactivated_date is NULL AND TARGET.etl_datetime < source.etl_datetime;
+            INSERT INTO staging.{} ({}) SELECT {} FROM staging.tmp_{} SOURCE left join staging.{} TARGET on {} WHERE ({}) and TARGET.deactivated_date is NULL AND TARGET.created_by < SOURCE.created_by;
             """.format(
                 config["target"],
                 columns_only_string,
