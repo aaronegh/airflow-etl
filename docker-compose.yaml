@@ -1,0 +1,65 @@
+version: '2.1'
+services:
+    init:
+        image: python:latest
+        volumes:
+            - ./dags:/usr/local/airflow/dags
+            - ./dag_templates:/usr/local/airflow/dag_templates
+            - ./requirements.txt:/usr/local/airflow/requirements.txt
+            - ./dag_initialisation.py:/usr/local/airflow/dag_initialisation.py
+        command: bash -c " pip install -r /usr/local/airflow/requirements.txt && python /usr/local/airflow/dag_initialisation.py "
+
+    postgres:
+        image: postgres:15rc1
+        restart: always
+        environment:
+            - POSTGRES_USER=airflow
+            - POSTGRES_PASSWORD=airflow
+            - POSTGRES_DB=airflow
+        ports:
+            - "5432:5432"
+        volumes:
+            # copy the sql script to create tables
+            - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+            - ./staging:/usr/local/airflow/staging
+        depends_on:
+            - init
+
+    webserver:
+        image: puckel/docker-airflow
+        restart: always
+        depends_on:
+            - postgres
+        environment:
+            - LOAD_EX=n
+            - EXECUTOR=Local
+            - AIRFLOW_HOME=/usr/local/airflow
+            - AIRFLOW_CONN_POSTGRES_STAGING=postgres://airflow:airflow@airflow_postgres_1:5432/airflow
+        volumes:
+            - ./dags:/usr/local/airflow/dags
+            - ./plugins:/usr/local/airflow/plugins
+            - ./config:/usr/local/airflow/config
+            - ./source_data:/usr/local/airflow/source_data
+            - ./staging:/usr/local/airflow/staging
+        ports:
+            - "8080:8080"
+        command: webserver
+        privileged: true
+        healthcheck:
+            test:
+                [
+                    "CMD-SHELL",
+                    "[ -f /usr/local/airflow/airflow-webserver.pid ]"
+                ]
+            interval: 30s
+            timeout: 30s
+            retries: 3
+
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - 3000:8080
+        depends_on:
+            - postgres
+            - webserver

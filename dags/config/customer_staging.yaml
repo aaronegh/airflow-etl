@@ -1,0 +1,20 @@
+job_name: customer_staging
+job_type: raw_to_staging
+schedule_interval: None
+source: /usr/local/airflow/source_data/data/data-exports/TPCDS_SF10TCL/customer/
+type: jsonlines
+key_column: C_CUSTOMER_ID
+target: customer
+target_db: postgres
+target_connection_id: POSTGRES_STAGING
+transformation:
+  - type: extract_domain_from_email
+    input_column: C_EMAIL_ADDRESS
+    output_column: C_EMAIL_DOMAIN
+  - type: drop_column
+    drop_columns: [C_FIRST_NAME, C_LAST_NAME, C_EMAIL_ADDRESS]
+  - type: remove_duplicates
+data_quality:
+  - type: check_column_null
+    input_column: C_CUSTOMER_ID
+  - type: check_duplicate
