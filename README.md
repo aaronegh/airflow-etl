@@ -28,14 +28,14 @@ The services required for this app includes :
 ## Running the Pipeline
 Once all services are running, access the Airflow web UI at `localhost:8080` with your desired browser. You will see this: 
 
-![airflowui1](airflowui1.png)
+![airflowui1](images/airflowui1.png)
 
 #### Steps:
 1. Turn on the dag by switching the Off Switch to On. (hint: beside customer_staging).
 2. Access the DAG by clicking on `customer_staging`.
 3. Once in the dag, check if the DAG has been switched on then click on 'Trigger DAG' button to run the DAG.
 4. The ETL is successful once all tasks are displaying green blocks. (see image below)
-![airflowui2](airflowui2.png)
+![airflowui2](images/airflowui2.png)
 5. To check & validate staging data, the application's postgres db can be accessed with the following credentials using your favourite SQL client (with mine being (DBeaver)[dbeaver.io]).
 
 |||
@@ -48,15 +48,15 @@ Once all services are running, access the Airflow web UI at `localhost:8080` wit
 The table name is `staging.customer`.
 
 #### Adminer
-For your convenience, i have included (Adminer)[https://www.adminer.org] into this docker deployment. Go to `localhost:3000` and log in with the above credentials. 
-![adminer1](adminer1.png)
+I have included (Adminer)[https://www.adminer.org] into this docker deployment just in case. Go to `localhost:3000` and log in with the above credentials. 
+![adminer1](images/adminer1.png)
 You should be able to see the tables once you switch the schema to `staging`.
-![adminer2](adminer2.png)
+![adminer2](images/adminer2.png)
 
 ## Documentation
 Following diagram illustrate the data pipeline framework that caters to the requirements above.
 
-![Dataflow](dataflow.png)
+![Dataflow](images/dataflow.png)
 
 A python app is used to parse YAML formatted [data pipeline config files](https://github.com/aaronegh/airflow-etl/blob/master/dags/config/customer_staging.yaml). By writting config files, this allows data engineers to reuse [ETL operators](https://github.com/aaronegh/airflow-etl/tree/master/plugins/operators) (custom/built-in) in Airflow for pipelines that follows similar ETL patterns. For the pipeline in this execise, it is assumed that source data will be available in a JSON line format consecutively and similiarly for other data coming from the same source. The extracted data will be transformed subsequently and loaded into Postgres DB.
 
