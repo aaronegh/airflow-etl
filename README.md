@@ -14,7 +14,7 @@ Prerequisite to run this application
 
 - Docker
 
-Once docker is install and running, in the repo's root folder, run docker compose up to start all the services required for the app.
+Once docker is installed and running, in the repo's root folder, run docker compose up to start all the services required for the app.
 ```
 docker-compose up
 ```
