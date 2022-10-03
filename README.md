@@ -58,7 +58,7 @@ Following diagram illustrate the data pipeline framework that caters to the requ
 
 ![Dataflow](images/dataflow.png)
 
-A python app is used to parse YAML formatted [data pipeline config files](https://github.com/aaronegh/airflow-etl/blob/master/dags/config/customer_staging.yaml). By writting config files, this allows data engineers to reuse [ETL operators](https://github.com/aaronegh/airflow-etl/tree/master/plugins/operators) (custom/built-in) in Airflow for pipelines that follows similar ETL patterns. For the pipeline in this execise, it is assumed that source data will be available in a JSON line format consecutively and similiarly for other data coming from the same source. The extracted data will be transformed subsequently and loaded into Postgres DB.
+A python app is used to parse YAML formatted [data pipeline config files](https://github.com/aaronegh/airflow-etl/blob/master/dags/config/customer_staging.yaml). By writting config files, this allows data engineers to reuse [ETL operators](https://github.com/aaronegh/airflow-etl/tree/master/plugins/operators) (custom/built-in) in Airflow for pipelines that follow similar ETL patterns. For the pipeline in this execise, it is assumed that source data will be available in a JSON line format consecutively and similiarly for other data coming from the same source. The extracted data will be transformed subsequently and loaded into Postgres DB.
 
 In detail, the pipeline performs the following tasks :
 
